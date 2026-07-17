@@ -32,3 +32,186 @@
   text-transform: uppercase;
   color: var(--text-dim);
 }
+/* ================= ABOUT ME SECTION ================= */
+.about-section{
+  position: relative;
+  z-index: 5;
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 50px 30px;
+  text-align: center;
+  overflow: visible;
+}
+
+/* ---- Glowing rounded photo ---- */
+.about-photo-wrap{
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 24px;
+}
+.about-photo-ring{
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--gold), var(--cyan), #ff5ac8, var(--gold));
+  animation: ringSpin 6s linear infinite;
+  filter: blur(2px);
+}
+.about-photo-ring::after{
+  content:"";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: var(--bg-deep);
+}
+.about-photo{
+  position: absolute;
+  inset: 0;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 2;
+  box-shadow:
+    0 0 25px 6px rgba(127,231,255,0.55),
+    0 0 55px 16px rgba(255,207,107,0.35);
+  animation: photoGlow 3s ease-in-out infinite;
+}
+@keyframes ringSpin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+@keyframes photoGlow{
+  0%,100%{
+    box-shadow: 0 0 25px 6px rgba(127,231,255,0.55), 0 0 55px 16px rgba(255,207,107,0.35);
+  }
+  50%{
+    box-shadow: 0 0 35px 10px rgba(127,231,255,0.85), 0 0 80px 24px rgba(255,207,107,0.55);
+  }
+}
+
+/* ---- Animated glowing name ---- */
+.about-name{
+  font-family: 'Georgia', serif;
+  font-size: clamp(24px, 5vw, 36px);
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, var(--gold), #fff8e1, var(--cyan), var(--gold));
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: nameShine 4s linear infinite;
+  text-shadow: 0 0 30px rgba(255,207,107,0.25);
+}
+@keyframes nameShine{
+  0%{ background-position: 0% center; }
+  100%{ background-position: 300% center; }
+}
+
+.about-role{
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.about-tagline{
+  font-size: 13px;
+  color: #c6cdea;
+  line-height: 1.7;
+  max-width: 360px;
+  margin: 0 auto 30px;
+  opacity: 0;
+  animation: fadeUp 1.2s ease forwards 0.4s;
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform: translateY(14px); }
+  to{ opacity:1; transform: translateY(0); }
+}
+
+/* ---- Bursting heart ---- */
+.heart-stage{
+  position: relative;
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart{
+  position: relative;
+  width: 60px;
+  height: 54px;
+  transform: rotate(-45deg);
+  background: linear-gradient(135deg, #ff5ac8, #ff2d55 60%, #c9184a);
+  box-shadow: 0 0 25px 6px rgba(255,45,85,0.6), 0 0 60px 18px rgba(255,90,200,0.35);
+  animation: heartBeat 1.8s ease-in-out infinite;
+  z-index: 3;
+}
+.heart::before,
+.heart::after{
+  content:"";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: inherit;
+}
+.heart::before{ top:-30px; left:0; }
+.heart::after{ top:0; left:30px; }
+
+@keyframes heartBeat{
+  0%,100%{ transform: rotate(-45deg) scale(1); }
+  25%{ transform: rotate(-45deg) scale(1.15); }
+  40%{ transform: rotate(-45deg) scale(0.95); }
+  55%{ transform: rotate(-45deg) scale(1.1); }
+}
+
+/* ---- Particles jo heart se fatt kar charo taraf failte hain ---- */
+.particle{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--cyan);
+  box-shadow: 0 0 10px 3px currentColor;
+  opacity: 0;
+  animation: burst 2.6s ease-out infinite;
+}
+.particle:nth-child(1){ --tx: 140px;  --ty: -40px;  color:#ff5ac8; animation-delay: 0s; }
+.particle:nth-child(2){ --tx: -150px; --ty: -20px;  color:#7fe7ff; animation-delay: 0.15s; }
+.particle:nth-child(3){ --tx: 90px;   --ty: 90px;   color:#ffcf6b; animation-delay: 0.3s; }
+.particle:nth-child(4){ --tx: -100px; --ty: 100px;  color:#ff5ac8; animation-delay: 0.45s; }
+.particle:nth-child(5){ --tx: 0px;    --ty: -130px; color:#7fe7ff; animation-delay: 0.6s; }
+.particle:nth-child(6){ --tx: 20px;   --ty: 130px;  color:#ffcf6b; animation-delay: 0.75s; }
+.particle:nth-child(7){ --tx: -140px; --ty: -60px;  color:#ff2d55; animation-delay: 0.9s; }
+.particle:nth-child(8){ --tx: 150px;  --ty: 30px;   color:#7fe7ff; animation-delay: 1.05s; }
+
+@keyframes burst{
+  0%{
+    transform: translate(-50%,-50%) translate(0,0) scale(0.3);
+    opacity: 0;
+  }
+  15%{
+    opacity: 1;
+  }
+  70%{
+    opacity: 0.6;
+  }
+  100%{
+    transform: translate(-50%,-50%) translate(var(--tx), var(--ty)) scale(0.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .about-photo-ring, .about-photo, .about-name, .heart, .particle{
+    animation: none !important;
+  }
+}
