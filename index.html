@@ -9,6 +9,7 @@
     --bg-deep:#02030a;
     --gold:#ffcf6b;
     --cyan:#7fe7ff;
+    --pink:#ff5ac8;
     --text-dim:#9aa3c7;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
@@ -58,6 +59,53 @@
   }
   .btn:hover{ background: rgba(255,207,107,0.18); border-color: var(--gold); }
   .hint{ text-align:center; color:var(--text-dim); font-size:11px; margin-bottom:10px; letter-spacing:1px; }
+
+  /* ---------- Planet search bar ---------- */
+  .planet-search-wrap{
+    position:relative; z-index:6;
+    max-width:320px; margin:0 auto 18px;
+  }
+  .planet-search-glow{
+    position:absolute; inset:-3px; border-radius:30px;
+    background: conic-gradient(from 0deg, var(--gold), var(--pink), var(--cyan), var(--gold));
+    filter: blur(6px);
+    animation: ringSpin 5s linear infinite;
+    opacity:0.85;
+  }
+  .planet-search-input{
+    position:relative; z-index:1;
+    width:100%; padding:11px 18px;
+    border-radius:26px; border:1px solid rgba(255,255,255,0.25);
+    background: rgba(6,8,20,0.92);
+    color:#eef1ff; font-family:inherit; font-size:13px; letter-spacing:1px;
+    outline:none;
+  }
+  .planet-search-input::placeholder{ color:var(--text-dim); }
+  .planet-search-results{
+    position:absolute; top:calc(100% + 8px); left:0; right:0;
+    background: rgba(10,12,28,0.97);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:14px; overflow:hidden;
+    max-height:0; opacity:0; pointer-events:none;
+    transition:.2s;
+    z-index:20;
+  }
+  .planet-search-results.open{ max-height:260px; opacity:1; pointer-events:auto; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+  .search-result-item{
+    padding:10px 18px; font-size:12px; letter-spacing:1px; color:#dfe6ff;
+    cursor:pointer; text-transform:uppercase; transition:.15s;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .search-result-item:last-child{ border-bottom:none; }
+  .search-result-item:hover{ background: rgba(255,207,107,0.15); color:var(--gold); }
+
+  .planet.search-highlight{
+    animation: searchPulse 0.6s ease-in-out 3;
+  }
+  @keyframes searchPulse{
+    0%,100%{ filter:brightness(1); transform:translate(-50%,-50%) scale(1); }
+    50%{ filter:brightness(2); transform:translate(-50%,-50%) scale(1.9); }
+  }
 
   /* ---------- Zoom viewport ---------- */
   .viewport{
@@ -200,7 +248,198 @@
   .panel{ position:relative; z-index:5; max-width:820px; margin:20px auto 60px; padding:0 24px; text-align:center; color:var(--text-dim); font-size:13px; line-height:1.8; }
   footer{ position:relative; z-index:5; text-align:center; padding:20px; color:#565f7d; font-size:11px; letter-spacing:1px; }
 
-  @media (prefers-reduced-motion: reduce){ .planet-wrap, .moon-wrap, .sun{ animation:none !important; } }
+  /* ================= ABOUT ME SECTION ================= */
+  .about-section{
+    position: relative;
+    z-index: 5;
+    max-width: 480px;
+    margin: 40px auto;
+    padding: 50px 30px;
+    text-align: center;
+    overflow: visible;
+  }
+
+  /* ---- Glowing rounded photo (bigger) ---- */
+  .about-photo-wrap{
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 24px;
+  }
+  .about-photo-ring{
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--gold), var(--cyan), var(--pink), var(--gold));
+    animation: ringSpin 6s linear infinite;
+    filter: blur(2px);
+  }
+  .about-photo-ring::after{
+    content:"";
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+  }
+  .about-photo,
+  .about-photo-fallback{
+    position: absolute;
+    inset: 0;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    z-index: 2;
+    box-shadow:
+      0 0 30px 8px rgba(127,231,255,0.55),
+      0 0 65px 20px rgba(255,207,107,0.35);
+    animation: photoGlow 3s ease-in-out infinite;
+  }
+  .about-photo-fallback{
+    display:none;
+    align-items:center; justify-content:center;
+    font-family:'Georgia', serif;
+    font-size:56px; letter-spacing:2px;
+    color:#0a0d1c;
+    background: conic-gradient(from 120deg, var(--gold), var(--pink), var(--cyan), var(--gold));
+  }
+  @keyframes ringSpin{
+    from{ transform: rotate(0deg); }
+    to{ transform: rotate(360deg); }
+  }
+  @keyframes photoGlow{
+    0%,100%{
+      box-shadow: 0 0 30px 8px rgba(127,231,255,0.55), 0 0 65px 20px rgba(255,207,107,0.35);
+    }
+    50%{
+      box-shadow: 0 0 42px 12px rgba(127,231,255,0.85), 0 0 95px 28px rgba(255,207,107,0.55);
+    }
+  }
+
+  /* ---- Animated glowing rainbow name ---- */
+  .about-name{
+    font-family: 'Georgia', serif;
+    font-size: clamp(28px, 6vw, 42px);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, var(--gold), var(--pink), var(--cyan), #a0ff7f, var(--gold));
+    background-size: 400% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: nameShine 4s linear infinite;
+    text-shadow: 0 0 30px rgba(255,207,107,0.25);
+  }
+  @keyframes nameShine{
+    0%{ background-position: 0% center; }
+    100%{ background-position: 400% center; }
+  }
+
+  .about-role{
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+  }
+
+  .about-tagline{
+    font-size: 13px;
+    color: #c6cdea;
+    line-height: 1.7;
+    max-width: 360px;
+    margin: 0 auto 30px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.4s;
+  }
+  @keyframes fadeUp{
+    from{ opacity:0; transform: translateY(14px); }
+    to{ opacity:1; transform: translateY(0); }
+  }
+
+  /* ---- Bursting heart ---- */
+  .heart-stage{
+    position: relative;
+    width: 100%;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .heart{
+    position: relative;
+    width: 60px;
+    height: 54px;
+    transform: rotate(-45deg);
+    background: linear-gradient(135deg, #ff5ac8, #ff2d55 60%, #c9184a);
+    box-shadow: 0 0 25px 6px rgba(255,45,85,0.6), 0 0 60px 18px rgba(255,90,200,0.35);
+    animation: heartBeat 1.8s ease-in-out infinite;
+    z-index: 3;
+  }
+  .heart::before,
+  .heart::after{
+    content:"";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: inherit;
+  }
+  .heart::before{ top:-30px; left:0; }
+  .heart::after{ top:0; left:30px; }
+
+  @keyframes heartBeat{
+    0%,100%{ transform: rotate(-45deg) scale(1); }
+    25%{ transform: rotate(-45deg) scale(1.15); }
+    40%{ transform: rotate(-45deg) scale(0.95); }
+    55%{ transform: rotate(-45deg) scale(1.1); }
+  }
+
+  /* ---- Particles jo heart se fatt kar charo taraf failte hain ---- */
+  .particle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 10px 3px currentColor;
+    opacity: 0;
+    animation: burst 2.6s ease-out infinite;
+  }
+  .particle:nth-child(1){ --tx: 140px;  --ty: -40px;  color:#ff5ac8; animation-delay: 0s; }
+  .particle:nth-child(2){ --tx: -150px; --ty: -20px;  color:#7fe7ff; animation-delay: 0.15s; }
+  .particle:nth-child(3){ --tx: 90px;   --ty: 90px;   color:#ffcf6b; animation-delay: 0.3s; }
+  .particle:nth-child(4){ --tx: -100px; --ty: 100px;  color:#ff5ac8; animation-delay: 0.45s; }
+  .particle:nth-child(5){ --tx: 0px;    --ty: -130px; color:#7fe7ff; animation-delay: 0.6s; }
+  .particle:nth-child(6){ --tx: 20px;   --ty: 130px;  color:#ffcf6b; animation-delay: 0.75s; }
+  .particle:nth-child(7){ --tx: -140px; --ty: -60px;  color:#ff2d55; animation-delay: 0.9s; }
+  .particle:nth-child(8){ --tx: 150px;  --ty: 30px;   color:#7fe7ff; animation-delay: 1.05s; }
+
+  @keyframes burst{
+    0%{
+      transform: translate(-50%,-50%) translate(0,0) scale(0.3);
+      opacity: 0;
+    }
+    15%{
+      opacity: 1;
+    }
+    70%{
+      opacity: 0.6;
+    }
+    100%{
+      transform: translate(-50%,-50%) translate(var(--tx), var(--ty)) scale(0.2);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .planet-wrap, .moon-wrap, .sun, .about-photo-ring, .about-photo, .about-photo-fallback, .about-name, .heart, .particle, .planet-search-glow{
+      animation:none !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -220,6 +459,13 @@
   <button class="btn" id="zoomOut">Zoom -</button>
   <button class="btn" id="zoomReset">Reset</button>
 </div>
+
+<div class="planet-search-wrap">
+  <div class="planet-search-glow"></div>
+  <input type="text" id="planetSearch" class="planet-search-input" placeholder="🔍 Planet dhundo... (e.g. Mars)" autocomplete="off">
+  <div class="planet-search-results" id="planetSearchResults"></div>
+</div>
+
 <p class="hint">Scroll / pinch se zoom karo · drag se ghumao · kisi bhi planet pe click karke uska close-up dekho</p>
 
 <div class="viewport" id="viewport">
@@ -274,18 +520,21 @@
 
 <div class="panel">
   <p><strong>Kaise chalta hai:</strong> Har planet apni orbit line pe real relative speed se ghoomta hai — jitna Sun se door utna slow.
-  Mouse wheel ya pinch se pura system zoom kar sakte ho, drag karke ghuma sakte ho, aur kisi bhi planet pe click karke uska close-up card khul jayega jisme uske facts honge.</p>
+  Mouse wheel ya pinch se pura system zoom kar sakte ho, drag karke ghuma sakte ho, aur kisi bhi planet pe click karke uska close-up card khul jayega jisme uske facts honge. Upar search bar se kisi bhi planet ka naam type karke seedha uske paas pahunch sakte ho.</p>
 </div>
+
 <section class="about-section">
   <div class="about-photo-wrap">
     <div class="about-photo-ring"></div>
-
+    <div class="about-photo-fallback" id="avatarFallback">SK</div>
     <img src="Screenshot_2026-07-17-18-21-10-43_99c04817c0de5652397fc8b56c3b3817.png"
          alt="Saurav Kumar"
-         class="about-photo">
+         class="about-photo"
+         id="aboutPhoto"
+         onerror="this.style.display='none'; document.getElementById('avatarFallback').style.display='flex';">
   </div>
 
-  <h2 class="about-name">Saurav Kumar</h2>
+  <h2 class="about-name">✨ Saurav God ✨</h2>
   <p class="about-role">CS Student</p>
   <p class="about-tagline">
     Code likhta hoon, universe explore karta hoon — is solar system ko bhi maine hi banaya hai. 🚀
@@ -447,25 +696,75 @@
   const modalDesc = document.getElementById('modalDesc');
   const modalFacts = document.getElementById('modalFacts');
 
+  function openPlanetModal(key){
+    const d = planetData[key];
+    if(!d) return;
+    modalPlanetVisual.style.background = d.color;
+    modalPlanetVisual.style.boxShadow = "0 0 40px 12px rgba(255,255,255,0.15)";
+    modalName.textContent = d.name;
+    modalTag.textContent = d.tag;
+    modalDesc.textContent = d.desc;
+    modalFacts.innerHTML = d.facts.map(f=>`<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('');
+    modalOverlay.classList.add('open');
+  }
+
   document.querySelectorAll('.planet').forEach(p=>{
-    p.addEventListener('click', ()=>{
-      const key = p.getAttribute('data-planet');
-      const d = planetData[key];
-      if(!d) return;
-      modalPlanetVisual.style.background = d.color;
-      modalPlanetVisual.style.boxShadow = "0 0 40px 12px rgba(255,255,255,0.15)";
-      modalName.textContent = d.name;
-      modalTag.textContent = d.tag;
-      modalDesc.textContent = d.desc;
-      modalFacts.innerHTML = d.facts.map(f=>`<div class="fact"><b>${f[0]}</b><span>${f[1]}</span></div>`).join('');
-      modalOverlay.classList.add('open');
-    });
+    p.addEventListener('click', ()=> openPlanetModal(p.getAttribute('data-planet')));
   });
 
   function closeModal(){ modalOverlay.classList.remove('open'); }
   document.getElementById('modalClose').addEventListener('click', closeModal);
   document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
   modalOverlay.addEventListener('click', (e)=>{ if(e.target === modalOverlay) closeModal(); });
+
+  /* ---------- Planet search bar ---------- */
+  const searchInput = document.getElementById('planetSearch');
+  const resultsBox = document.getElementById('planetSearchResults');
+
+  function renderResults(matches){
+    resultsBox.innerHTML = '';
+    matches.forEach(key=>{
+      const item = document.createElement('div');
+      item.className = 'search-result-item';
+      item.textContent = planetData[key].name;
+      item.addEventListener('click', ()=> selectPlanetFromSearch(key));
+      resultsBox.appendChild(item);
+    });
+    resultsBox.classList.toggle('open', matches.length > 0);
+  }
+
+  searchInput.addEventListener('input', ()=>{
+    const q = searchInput.value.trim().toLowerCase();
+    if(!q){ resultsBox.classList.remove('open'); resultsBox.innerHTML=''; return; }
+    const matches = Object.keys(planetData).filter(k => k.includes(q));
+    renderResults(matches);
+  });
+
+  searchInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter'){
+      const q = searchInput.value.trim().toLowerCase();
+      const match = Object.keys(planetData).find(k => k.includes(q));
+      if(match) selectPlanetFromSearch(match);
+    }
+  });
+
+  function selectPlanetFromSearch(key){
+    const el = document.querySelector(`.planet[data-planet="${key}"]`);
+    if(el){
+      openPlanetModal(key);
+      el.classList.add('search-highlight');
+      setTimeout(()=> el.classList.remove('search-highlight'), 1900);
+    }
+    resultsBox.classList.remove('open');
+    resultsBox.innerHTML = '';
+    searchInput.value = '';
+  }
+
+  document.addEventListener('click', (e)=>{
+    if(!e.target.closest('.planet-search-wrap')){
+      resultsBox.classList.remove('open');
+    }
+  });
 </script>
 
 </body>
